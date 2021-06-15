@@ -11,6 +11,10 @@ TagManager:
   - Locked
   - Unlocked
   - Enemy (Sight)
+  - RecordTime
+  - CurrentTime
+  - TimerTime
+  - FailTime
   layers:
   - Default
   - TransparentFX

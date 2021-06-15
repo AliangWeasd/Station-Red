@@ -35,7 +35,43 @@ public class slipperyWASD : MonoBehaviour {
                     rb.AddForce(Vector2.down * force, ForceMode2D.Force);
             }
         }
-	}
+
+        /*
+        if (isOn)
+        {
+            if (Input.GetButton(hort))
+            {
+                h_speed = Input.GetAxis(hort) > 0 ? (h_speed + accel) : (h_speed - accel);
+            }
+            if (Input.GetButton(vert))
+            {
+                v_speed = Input.GetAxis(vert) > 0 ? (v_speed + accel) : (v_speed - accel);
+            }
+        }
+
+        if (h_speed > 1)
+            h_speed = 1;
+        if (v_speed > 1)
+            v_speed = 1;
+
+        if ((h_speed * h_speed) < cutoff_speed_squared)
+            h_speed = 0;
+        if ((v_speed * v_speed) < cutoff_speed_squared)
+            v_speed = 0;
+
+        float angle = Mathf.Atan2(v_speed, h_speed);
+
+        Debug.Log(angle);
+
+        Vector3 pos = this.transform.position;
+        pos.x += Mathf.Cos(angle) * h_speed * max_speed;
+        pos.y += Mathf.Sin(angle) * v_speed * max_speed;
+        this.transform.position = pos;
+
+        h_speed = h_speed * friction;
+        v_speed = v_speed * friction;
+        */
+    }
 
     public void StartGamePoint()
     {
