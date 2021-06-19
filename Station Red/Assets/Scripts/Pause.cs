@@ -5,12 +5,22 @@ using UnityEngine;
 public class Pause : MonoBehaviour
 {
     private bool canPause = true;
+    private bool isPaused = false;
 
-    // Start is called before the first frame update
     void Start()
     {
+        GameEvents.current.onPauseButtonDown += PauseButtonDown;
         GameEvents.current.onWinStateReached += WinStateReached;
         GameEvents.current.onPlayerDeath += PlayerDeath;
+
+        Time.timeScale = 1;
+    }
+
+    void OnDestroy()
+    {
+        GameEvents.current.onPauseButtonDown -= PauseButtonDown;
+        GameEvents.current.onWinStateReached -= WinStateReached;
+        GameEvents.current.onPlayerDeath -= PlayerDeath;
     }
 
     // Update is called once per frame
@@ -19,12 +29,30 @@ public class Pause : MonoBehaviour
         if(canPause && Input.GetButtonDown("Submit"))
         {
             GameEvents.current.PauseButtonDown();
+            if (AudioManager.current != null)
+            {
+                AudioManager.current.ToggleMusic();
+            }
         }
     }
 
     public void PauseButtonPress()
     {
         GameEvents.current.PauseButtonDown();
+    }
+
+    public void PauseButtonDown()
+    {
+        if (isPaused)
+        {
+            Time.timeScale = 1;
+        }
+        else
+        {
+            Time.timeScale = 0;
+        }
+
+        isPaused = !isPaused;
     }
 
     public void WinStateReached()
@@ -35,5 +63,10 @@ public class Pause : MonoBehaviour
     public void PlayerDeath()
     {
         canPause = false;
+    }
+
+    public void RestartTime()
+    {
+        Time.timeScale = 1;
     }
 }

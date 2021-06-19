@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System;
 using System.Collections;
 
 public class PlayerDamage : MonoBehaviour {
@@ -11,14 +12,28 @@ public class PlayerDamage : MonoBehaviour {
     private Rigidbody2D rb;
 
     private bool isDead = false;
+    /*
+	void OnEnable() {
+        GameEvents.current.onPlayerDeath += PlayerDeath;
+	}*/
 
-	// Use this for initialization
-	void Start () {
+    void Start()
+    {
         GameEvents.current.onPlayerDeath += PlayerDeath;
 
         sprite = GetComponent<SpriteRenderer>();
         rb = GetComponent<Rigidbody2D>();
-	}
+
+        if(sprite == null || rb == null)
+        {
+            throw new Exception("Sprite Renderer and RigidBody2D are required.");
+        }
+    }
+
+    void OnDestroy()
+    {
+        GameEvents.current.onPlayerDeath -= PlayerDeath;
+    }
 
     void OnCollisionEnter2D(Collision2D collision)
     {

@@ -7,7 +7,7 @@ public class ArrowVisible : MonoBehaviour
 {
     public bool isLeftArrow = true;
 
-    void Awake()
+    void Start()
     {
         if (isLeftArrow)
         {

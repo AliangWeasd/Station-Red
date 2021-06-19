@@ -24,7 +24,8 @@ public class UIEvents : MonoBehaviour
     public event Action onStopTimeCount;
     public event Action onCountHeartLost;
     public event Action<int> onStartRecordCount;
-    public event Action<int> onStartCurrentCount;
+    public event Action<int,int> onStartCurrentCount;
+    public event Action<int> onStartFailCount;
     public event Action onRecordTime;
     public event Action onCurrentTime;
     public event Action onFailTime;
@@ -61,11 +62,20 @@ public class UIEvents : MonoBehaviour
         }
 
     }
-    public void StartCurrentCount(int time)
+
+    public void StartCurrentCount(int time, int heartsLost)
     {
         if (onStartCurrentCount != null)
         {
-            onStartCurrentCount(time);
+            onStartCurrentCount(time, heartsLost);
+        }
+    }
+
+    public void StartFailCount(int time)
+    {
+        if (onStartFailCount != null)
+        {
+            onStartFailCount(time);
         }
     }
 

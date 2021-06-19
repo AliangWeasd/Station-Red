@@ -33,6 +33,8 @@ public class ShowPage : MonoBehaviour
         hearts = this.gameObject.transform.GetChild(2).gameObject;
 
         cam = Camera.main;
+
+        setAppear(false);
     }
 
     void OnDestroy()
@@ -52,6 +54,8 @@ public class ShowPage : MonoBehaviour
 
     IEnumerator Launch(int heartsLost)
     {
+        setAppear(true);
+
         Vector3 distance = endPos - startPos;
 
         float timer = 0.0f;
@@ -88,7 +92,7 @@ public class ShowPage : MonoBehaviour
         PlayerPrefs.SetInt(HIGHSCORE_KEY + LEVEL, time);
 
         UIEvents.current.StartRecordCount(recordTime);
-        UIEvents.current.StartCurrentCount(yourTime);
+        UIEvents.current.StartCurrentCount(yourTime, heartsLost);
 
         UIEvents.current.RecordTime();
         while(!Input.GetButtonDown("Submit"))
@@ -96,5 +100,15 @@ public class ShowPage : MonoBehaviour
             yield return new WaitForEndOfFrame();
         }
         UIEvents.current.StopTimeCount();
+    }
+
+    void setAppear(bool isOn)
+    {
+        GetComponent<Image>().enabled = isOn;
+
+        for (int a = 0; a < transform.childCount; a++)
+        {
+            transform.GetChild(a).gameObject.SetActive(isOn);
+        }
     }
 }

@@ -18,66 +18,80 @@ public class CountTime : MonoBehaviour
 
     void Start()
     {
-        UIEvents.current.onStartRecordCount += StartRecordCount;
-        UIEvents.current.onStartCurrentCount += StartCurrentCount;
-        UIEvents.current.onRecordTime += RecordTime;
-        UIEvents.current.onCurrentTime += CurrentTime;
         UIEvents.current.onStopTimeCount += StopTimeCount;
 
-        GameEvents.current.onPlayerAttacked += PlayerAttacked;
+        if (this.tag == "RecordTime")
+        {
+            UIEvents.current.onStartRecordCount += StartRecordCount;
+            UIEvents.current.onRecordTime += RecordTime;
+        }
+        else if (this.tag == "CurrentTime")
+        {
+            UIEvents.current.onStartCurrentCount += StartCurrentCount;
+            UIEvents.current.onCurrentTime += CurrentTime;
+        }
+        else if (this.tag == "FailTime")
+        {
+            UIEvents.current.onStartFailCount += StartFailCount;
+            UIEvents.current.onFailTime += FailTime;
+        }
     }
 
     void OnDestroy()
     {
-        UIEvents.current.onStartRecordCount -= StartRecordCount;
-        UIEvents.current.onStartCurrentCount -= StartCurrentCount;
-        UIEvents.current.onRecordTime -= RecordTime;
-        UIEvents.current.onCurrentTime -= CurrentTime;
         UIEvents.current.onStopTimeCount -= StopTimeCount;
 
-        GameEvents.current.onPlayerAttacked -= PlayerAttacked;
+        if (this.tag == "RecordTime")
+        {
+            UIEvents.current.onStartRecordCount -= StartRecordCount;
+            UIEvents.current.onRecordTime -= RecordTime;
+        }
+        else if (this.tag == "CurrentTime")
+        {
+            UIEvents.current.onStartCurrentCount -= StartCurrentCount;
+            UIEvents.current.onCurrentTime -= CurrentTime;
+        }
+        else if (this.tag == "FailTime")
+        {
+            UIEvents.current.onStartFailCount -= StartFailCount;
+            UIEvents.current.onFailTime -= FailTime;
+        }
     }
 
     private void StartRecordCount(int time)
     {
-        if(this.tag == "RecordTime")
-        {
-            this.time = time;
-        }
+        this.time = time;
     }
 
-    private void StartCurrentCount(int time)
+    private void StartCurrentCount(int time, int heartsLost)
     {
-        if (this.tag == "CurrentTime")
-        {
-            this.time = time;
-        }
+        this.time = time;
+        healthLost = heartsLost;
+    }
+
+    private void StartFailCount(int time)
+    {
+        this.time = time;
     }
 
     private void RecordTime()
     {
-        if(this.tag == "RecordTime")
-        {
-            StartCoroutine(Count());
-        }
+        StartCoroutine(Count());
     }
 
     private void CurrentTime()
     {
-        if (this.tag == "CurrentTime")
-        {
-            StartCoroutine(Count());
-        }
+        StartCoroutine(Count());
+    }
+
+    private void FailTime()
+    {
+        StartCoroutine(Count());
     }
 
     private void StopTimeCount()
     {
         isIncrementing = false;
-    }
-
-    public void PlayerAttacked()
-    {
-        healthLost++;
     }
 
     void PrintTime(string time)

@@ -9,13 +9,26 @@ public class slipperyWASD : MonoBehaviour {
 	Rigidbody2D rb;
 
     public bool isOn = false;
+    /*
+	void OnEnable() 
+    {
+        GameEvents.current.onStartGamePoint += StartGamePoint;
+        GameEvents.current.onPlayerDeath += PlayerDeath;
+	}*/
 
-	void Start () {
+    void Start()
+    {
         GameEvents.current.onStartGamePoint += StartGamePoint;
         GameEvents.current.onPlayerDeath += PlayerDeath;
 
         rb = GetComponent<Rigidbody2D>();
-	}
+    }
+
+    void OnDestroy()
+    {
+        GameEvents.current.onStartGamePoint -= StartGamePoint;
+        GameEvents.current.onPlayerDeath -= PlayerDeath;
+    }
 	
 	void FixedUpdate () {
         if (isOn)

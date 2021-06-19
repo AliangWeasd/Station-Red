@@ -11,6 +11,16 @@ public class ShowMenuCard : MonoBehaviour
     public Vector3 upPos = new Vector3();
     public float timeInSec = 1f;
 
+    void Start()
+    {
+        SR_MenuEvents.current.onButtonPressed += setAppear;
+    }
+
+    void OnDestroy()
+    {
+        SR_MenuEvents.current.onButtonPressed -= setAppear;
+    }
+
     IEnumerator Launch()
     {
         Vector3 distance = upPos - downPos;
@@ -82,6 +92,19 @@ public class ShowMenuCard : MonoBehaviour
         for (int a = 0; a < transform.childCount; a++)
         {
             transform.GetChild(a).gameObject.SetActive(false);
+        }
+    }
+
+    public void setAppear(string tag, bool isOn)
+    {
+        if (this.gameObject.tag == tag)
+        {
+            GetComponent<Image>().enabled = isOn;
+
+            for (int a = 0; a < transform.childCount; a++)
+            {
+                transform.GetChild(a).gameObject.SetActive(isOn);
+            }
         }
     }
 }

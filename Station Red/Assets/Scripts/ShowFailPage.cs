@@ -31,6 +31,8 @@ public class ShowFailPage : MonoBehaviour
         record = this.gameObject.transform.GetChild(0).gameObject;
 
         cam = Camera.main;
+
+        setAppear(false);
     }
 
     void OnDestroy()
@@ -50,6 +52,8 @@ public class ShowFailPage : MonoBehaviour
 
     IEnumerator Fall()
     {
+        setAppear(true);
+
         Vector3 distance = endPos - startPos;
 
         float timer = 0.0f;
@@ -63,6 +67,7 @@ public class ShowFailPage : MonoBehaviour
         }
         transform.position = new Vector3(endPos.x, endPos.y, 2);
 
+        UIEvents.current.StartFailCount(recordTime);
 
         UIEvents.current.FailTime();
         while (!Input.GetButtonDown("Submit"))
@@ -70,5 +75,15 @@ public class ShowFailPage : MonoBehaviour
             yield return new WaitForEndOfFrame();
         }
         UIEvents.current.StopTimeCount();
+    }
+
+    void setAppear(bool isOn)
+    {
+        GetComponent<Image>().enabled = isOn;
+
+        for (int a = 0; a < transform.childCount; a++)
+        {
+            transform.GetChild(a).gameObject.SetActive(isOn);
+        }
     }
 }

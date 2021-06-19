@@ -7,11 +7,18 @@ public class ShowPauseScreen : MonoBehaviour
 {
     private Image pauseCard;
     private bool isPaused = false;
+    /*
+    void OnEnable()
+    {
+        GameEvents.current.onPauseButtonDown += PauseButtonDown;
+    }*/
 
     void Start()
     {
         GameEvents.current.onPauseButtonDown += PauseButtonDown;
         pauseCard = GetComponent<Image>();
+
+        setAppear(false);
     }
 
     void OnDestroy()
@@ -23,30 +30,23 @@ public class ShowPauseScreen : MonoBehaviour
     {
         if(isPaused)
         {
-            pauseCard.enabled = false;
-            Time.timeScale = 1;
-
-            for (int a = 0; a < transform.childCount; a++)
-            {
-                transform.GetChild(a).gameObject.SetActive(false);
-            }
+            setAppear(false);
         }
         else
         {
-            pauseCard.enabled = true;
-            Time.timeScale = 0;
-
-            for (int a = 0; a < transform.childCount; a++)
-            {
-                transform.GetChild(a).gameObject.SetActive(true);
-            }
+            setAppear(true);
         }
 
         isPaused = !isPaused;
     }
 
-    public void RestartTime()
+    void setAppear(bool isOn)
     {
-        Time.timeScale = 1;
+        pauseCard.enabled = isOn;
+
+        for (int a = 0; a < transform.childCount; a++)
+        {
+            transform.GetChild(a).gameObject.SetActive(isOn);
+        }
     }
 }

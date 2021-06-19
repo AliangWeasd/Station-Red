@@ -34,6 +34,7 @@ public class SR_MenuEvents : MonoBehaviour
     public event Action onIndexLeast;
     public event Action onIndexMost;
     public event Action onIndexBetween;
+    public event Action<string,bool> onButtonPressed;
 
     public void PlayPressed()
     {
@@ -144,6 +145,14 @@ public class SR_MenuEvents : MonoBehaviour
         if (onIndexBetween != null)
         {
             onIndexBetween();
+        }
+    }
+
+    public void ButtonPressed(string tag, bool isOn)
+    {
+        if (onButtonPressed != null)
+        {
+            onButtonPressed(tag, isOn);
         }
     }
 }

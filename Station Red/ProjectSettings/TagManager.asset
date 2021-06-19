@@ -15,6 +15,15 @@ TagManager:
   - CurrentTime
   - TimerTime
   - FailTime
+  - mastervolume
+  - musicvolume
+  - effectsvolume
+  - Pause
+  - Retry
+  - Help
+  - Options
+  - Levels
+  - Quit
   layers:
   - Default
   - TransparentFX

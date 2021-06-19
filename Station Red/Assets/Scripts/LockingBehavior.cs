@@ -5,6 +5,11 @@ using UnityEngine;
 public class LockingBehavior : MonoBehaviour
 {
     private float AmountOfKeys = 0;
+    /*
+    void Awake()
+    {
+        GameEvents.current.onKeyCollected += KeyCollected;
+    }*/
 
     // Start is called before the first frame update
     void Start()
@@ -17,6 +22,11 @@ public class LockingBehavior : MonoBehaviour
         {
             UnlockDoor();
         }
+    }
+
+    void OnDestroy()
+    {
+        GameEvents.current.onKeyCollected -= KeyCollected;
     }
 
     public void KeyCollected()

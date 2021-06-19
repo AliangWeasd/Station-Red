@@ -15,6 +15,27 @@ public class ResolutionManager : MonoBehaviour
 
     private const string RESOLUTION_PREF_KEY = "resolution";
 
+    // Singleton
+    public static ResolutionManager current = null;
+
+    // Start is called before the first frame update
+    void Awake()
+    {
+        // If there is not already an instance of SoundManager, set it to this.
+        if (current == null)
+        {
+            current = this;
+        }
+        //If an instance already exists, destroy whatever this object is to enforce the singleton.
+        else if (current != this)
+        {
+            Destroy(gameObject);
+        }
+
+        //Set SoundManager to DontDestroyOnLoad so that it won't be destroyed when reloading our scene.
+        DontDestroyOnLoad(gameObject);
+    }
+
     void Start()
     {
         resolutions = Screen.resolutions;

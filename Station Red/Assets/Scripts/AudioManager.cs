@@ -5,74 +5,130 @@ using UnityEngine.SceneManagement;
 
 public class AudioManager : MonoBehaviour
 {
-    public AudioSource audioS;
-    public AudioClip menuMusic;
-    public AudioClip levelMusic;
+    public AudioSource musicSource;
+    public AudioSource effectsSource;
 
     private bool isPaused = false;
+
+    private float masterVolume;
+    private float musicVolume;
+    private float effectsVolume;
+
+    private const string MASTER_VOLUME = "mastervolume";
+    private const string MUSIC_VOLUME = "musicvolume";
+    private const string EFFECTS_VOLUME = "effectsvolume";
+
+    // Singleton
+    public static AudioManager current = null;
 
     // Start is called before the first frame update
     void Awake()
     {
-        audioS.clip = menuMusic;
-        audioS.Play();
+        // If there is not already an instance of SoundManager, set it to this.
+        if (current == null)
+        {
+            current = this;
+        }
+        //If an instance already exists, destroy whatever this object is to enforce the singleton.
+        else if (current != this)
+        {
+            Destroy(gameObject);
+        }
 
-        SceneManager.activeSceneChanged += ChangedActiveScene;
-        GameEvents.current.onStartingGame += StartingGame;
-        GameEvents.current.onPlayerDeath += PlayerDeath;
+        masterVolume = PlayerPrefs.GetFloat(MASTER_VOLUME, 1);
+        musicVolume = PlayerPrefs.GetFloat(MUSIC_VOLUME, 1);
+        effectsVolume = PlayerPrefs.GetFloat(EFFECTS_VOLUME, 1);
+
+        changeVolume();
+
+        //Set SoundManager to DontDestroyOnLoad so that it won't be destroyed when reloading our scene.
+        DontDestroyOnLoad(gameObject);
     }
 
-    private void ChangedActiveScene(Scene current, Scene next)
+    // Play a single clip through the sound effects source.
+    public void PlayEffect(AudioClip clip)
     {
-        string currentName = current.name;
+        effectsSource.clip = clip;
+        effectsSource.PlayOneShot(clip);
+    }
 
-        if (next.name == "TitleScene")
+    // Play a single clip through the music source.
+    public void PlayMusic(AudioClip clip)
+    {
+        if (musicSource.clip == null || musicSource.clip.name != clip.name)
         {
-            audioS.clip = menuMusic;
-            audioS.Play();
+            musicSource.clip = clip;
+            musicSource.Play();
+        }
+
+        if(isPaused)
+        {
+            UnpauseMusic();
+            StartCoroutine(IncreaseVolume());
         }
     }
 
-    private void StartingGame()
+    public void StopEffect()
     {
-        if (isPaused)
+        effectsSource.Stop();
+    }
+
+    public void ToggleMusic()
+    {
+        if (!isPaused)
         {
-            audioS.UnPause();
-            StartCoroutine(IncreaseVolume());
-            isPaused = false;
+            musicSource.Pause();
+            isPaused = true;
         }
         else
         {
-            audioS.clip = levelMusic;
-            audioS.Play();
+            musicSource.UnPause();
+            isPaused = false;
         }
     }
 
-    private void PlayerDeath()
+    public void PauseMusic()
     {
-        audioS.Pause();
+        if (!isPaused)
+        {
+            musicSource.Pause();
+        }
         isPaused = true;
+    }
+
+    public void UnpauseMusic()
+    {
+        if (isPaused)
+        {
+            musicSource.UnPause();
+        }
+        isPaused = false;
+    }
+
+    public void ResetPause()
+    {
+        isPaused = false;
     }
 
     IEnumerator IncreaseVolume()
     {
-        float volumeSliderValue = audioS.volume;
-        float pitchSliderValue = audioS.pitch;
-        float startVolume = 0;
+        float volumeSliderValue = masterVolume * musicVolume;
+        float pitchSliderValue = 1;
+        float startVolume = volumeSliderValue / 2;
         float startPitch = 0;
 
         float i = 0;
         float timeToDecrease = 2;
 
-        if (audioS.pitch > 0)
+        if (musicSource.pitch > 0)
         {
-            audioS.pitch = startVolume;
-            audioS.volume = startPitch;
+            musicSource.pitch = startPitch;
+            //musicSource.volume = startVolume;
 
             while (i < timeToDecrease)
             {
-                audioS.pitch = pitchSliderValue * i / timeToDecrease;
-                audioS.volume = volumeSliderValue * i / timeToDecrease;
+                musicSource.pitch = pitchSliderValue * i / timeToDecrease;
+                //musicSource.volume = volumeSliderValue * i / (timeToDecrease * 2) + startVolume;
 
                 i += Time.deltaTime;
                 yield return new WaitForFixedUpdate();
@@ -80,5 +136,32 @@ public class AudioManager : MonoBehaviour
         }
 
         yield return null;
+    }
+
+    public void changeMasterVolume(float masterVolume)
+    {
+        this.masterVolume = masterVolume;
+        PlayerPrefs.SetFloat(MASTER_VOLUME, masterVolume);
+        changeVolume();
+    }
+
+    public void changeMusicVolume(float musicVolume)
+    {
+        this.musicVolume = musicVolume;
+        PlayerPrefs.SetFloat(MUSIC_VOLUME, musicVolume);
+        changeVolume();
+    }
+
+    public void changeEffectsVolume(float effectsVolume)
+    {
+        this.effectsVolume = effectsVolume;
+        PlayerPrefs.SetFloat(EFFECTS_VOLUME, effectsVolume);
+        changeVolume();
+    }
+
+    public void changeVolume()
+    {
+        musicSource.volume = masterVolume * musicVolume;
+        effectsSource.volume = masterVolume * effectsVolume;
     }
 }
