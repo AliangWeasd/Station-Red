@@ -19,6 +19,16 @@ public class ArrowVisible : MonoBehaviour
         }
 
         SR_MenuEvents.current.onIndexBetween += IndexBetween;
+
+        /*
+        Slider sliderVolume = GetComponent<Slider>();
+        sliderVolume.value = PlayerPrefs.GetFloat(volumeKey, 1);
+
+        if (AudioManager.current != null)
+        {
+            sliderVolume.onValueChanged.AddListener(delegate { VolumeChange(sliderVolume); });
+        }
+        */
     }
 
     void OnDestroy()

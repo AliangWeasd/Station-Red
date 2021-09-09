@@ -7,6 +7,7 @@ using UnityEngine.UI;
 public class BackButton : MonoBehaviour
 {
     private Button btn;
+    private ShowMenuCard func;
 
     // Start is called before the first frame update
     void Start()
@@ -19,10 +20,15 @@ public class BackButton : MonoBehaviour
         {
             throw new Exception("Button component required to use this script.");
         }
+
+        if ((func = GetComponentInParent<ShowMenuCard>()) == null)
+        {
+            throw new Exception("Parent component <ShowMenuCard> required to use this script.");
+        }
     }
 
     public void ButtonPressed()
     {
-        SR_MenuEvents.current.ButtonPressed(transform.parent.tag, false);
+        func.setAppear(false);
     }
 }

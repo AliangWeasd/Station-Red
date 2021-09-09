@@ -1,12 +1,16 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class ShowPauseScreen : MonoBehaviour
 {
-    private Image pauseCard;
     private bool isPaused = false;
+
+    private CanvasGroup canvasGroup;
+    public GameObject pauseCard;
+
     /*
     void OnEnable()
     {
@@ -15,10 +19,14 @@ public class ShowPauseScreen : MonoBehaviour
 
     void Start()
     {
-        GameEvents.current.onPauseButtonDown += PauseButtonDown;
-        pauseCard = GetComponent<Image>();
+        canvasGroup = GetComponent<CanvasGroup>();
 
-        setAppear(false);
+        if (canvasGroup == null)
+        {
+            throw new Exception("CanvasGroup component required to use this script.");
+        }
+
+        GameEvents.current.onPauseButtonDown += PauseButtonDown;
     }
 
     void OnDestroy()
@@ -28,25 +36,10 @@ public class ShowPauseScreen : MonoBehaviour
 
     private void PauseButtonDown()
     {
-        if(isPaused)
-        {
-            setAppear(false);
-        }
-        else
-        {
-            setAppear(true);
-        }
-
         isPaused = !isPaused;
-    }
 
-    void setAppear(bool isOn)
-    {
-        pauseCard.enabled = isOn;
-
-        for (int a = 0; a < transform.childCount; a++)
-        {
-            transform.GetChild(a).gameObject.SetActive(isOn);
-        }
+        canvasGroup.alpha = Convert.ToInt16(isPaused);
+        canvasGroup.interactable = isPaused;
+        canvasGroup.blocksRaycasts = isPaused;
     }
 }

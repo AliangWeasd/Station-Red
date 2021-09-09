@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -15,6 +16,7 @@ public class ShowPage : MonoBehaviour
     public Vector3 endPos = new Vector3();
     public float timeInSec = 1f;
 
+    private CanvasGroup canvasGroup;
     private GameObject record;
     private GameObject current;
     private GameObject hearts;
@@ -26,6 +28,13 @@ public class ShowPage : MonoBehaviour
 
     void Start()
     {
+        canvasGroup = GetComponent<CanvasGroup>();
+
+        if (canvasGroup == null)
+        {
+            throw new Exception("CanvasGroup component required to use this script.");
+        }
+
         GameEvents.current.onWinStateReached += WinStateReached;
 
         record = this.gameObject.transform.GetChild(0).gameObject;
@@ -44,6 +53,10 @@ public class ShowPage : MonoBehaviour
 
     public void WinStateReached()
     {
+        canvasGroup.alpha = 1;
+        canvasGroup.interactable = true;
+        canvasGroup.blocksRaycasts = true;
+
         int heartLeft = GameObject.Find("HealthBar").GetComponent<HealthBar>().currentAmount;
 
         endPos = cam.ScreenToWorldPoint(new Vector3(cam.pixelWidth / 2, cam.pixelHeight / 2, cam.nearClipPlane));
@@ -104,11 +117,8 @@ public class ShowPage : MonoBehaviour
 
     void setAppear(bool isOn)
     {
-        GetComponent<Image>().enabled = isOn;
-
-        for (int a = 0; a < transform.childCount; a++)
-        {
-            transform.GetChild(a).gameObject.SetActive(isOn);
-        }
+        canvasGroup.alpha = Convert.ToInt32(isOn);
+        canvasGroup.interactable = isOn;
+        canvasGroup.blocksRaycasts = isOn;
     }
 }

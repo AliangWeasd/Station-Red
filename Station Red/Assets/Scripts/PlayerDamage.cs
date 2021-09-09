@@ -94,6 +94,6 @@ public class PlayerDamage : MonoBehaviour {
 
         gameObject.GetComponent<SpriteRenderer>().sprite = deadSprite;
         gameObject.tag = "Wall";
-        gameObject.transform.GetChild(0).gameObject.SetActive(false);
+        //gameObject.transform.GetChild(0).gameObject.SetActive(false);
     }
 }

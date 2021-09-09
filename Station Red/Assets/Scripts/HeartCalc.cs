@@ -1,14 +1,25 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class HeartCalc : MonoBehaviour
 {
     public int heartsLeft;
 
+    private Slider healthbar;
+
     // Start is called before the first frame update
     void Start()
     {
+        healthbar = GetComponent<Slider>();
+
+        if (healthbar == null)
+        {
+            throw new Exception("Slider component required to use this script.");
+        }
+
         UIEvents.current.onCountHeartLost += CountHeartLost;
     }
 
@@ -19,7 +30,7 @@ public class HeartCalc : MonoBehaviour
 
     private void CountHeartLost()
     {
-        this.gameObject.transform.GetChild(heartsLeft - 1).gameObject.SetActive(false);
         heartsLeft--;
+        healthbar.value = heartsLeft;
     }
 }

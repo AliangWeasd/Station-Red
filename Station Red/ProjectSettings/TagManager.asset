@@ -24,6 +24,7 @@ TagManager:
   - Options
   - Levels
   - Quit
+  - Menu
   layers:
   - Default
   - TransparentFX

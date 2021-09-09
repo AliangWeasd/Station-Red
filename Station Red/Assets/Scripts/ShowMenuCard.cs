@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -11,14 +12,16 @@ public class ShowMenuCard : MonoBehaviour
     public Vector3 upPos = new Vector3();
     public float timeInSec = 1f;
 
+    private CanvasGroup canvasGroup;
+
     void Start()
     {
-        SR_MenuEvents.current.onButtonPressed += setAppear;
-    }
+        canvasGroup = GetComponent<CanvasGroup>();
 
-    void OnDestroy()
-    {
-        SR_MenuEvents.current.onButtonPressed -= setAppear;
+        if (canvasGroup == null)
+        {
+            throw new Exception("CanvasGroup component required to use this script.");
+        }
     }
 
     IEnumerator Launch()
@@ -77,34 +80,29 @@ public class ShowMenuCard : MonoBehaviour
 
     public void Appear()
     {
-        GetComponent<Image>().enabled = true;
-
-        for (int a = 0; a < transform.childCount; a++)
-        {
-            transform.GetChild(a).gameObject.SetActive(true);
-        }
+        canvasGroup.alpha = 1;
+        canvasGroup.interactable = true;
+        canvasGroup.blocksRaycasts = true;
     }
 
     public void Disappear()
     {
-        GetComponent<Image>().enabled = false;
-
-        for (int a = 0; a < transform.childCount; a++)
-        {
-            transform.GetChild(a).gameObject.SetActive(false);
-        }
+        canvasGroup.alpha = 0;
+        canvasGroup.interactable = false;
+        canvasGroup.blocksRaycasts = false;
     }
 
-    public void setAppear(string tag, bool isOn)
+    public void setAppear(bool isOn)
     {
-        if (this.gameObject.tag == tag)
+        if (this.gameObject.tag == "Menu")
         {
-            GetComponent<Image>().enabled = isOn;
-
-            for (int a = 0; a < transform.childCount; a++)
-            {
-                transform.GetChild(a).gameObject.SetActive(isOn);
-            }
+            StartCoroutine(Hide());
+        }
+        else
+        {
+            canvasGroup.alpha = Convert.ToInt32(isOn);
+            canvasGroup.interactable = isOn;
+            canvasGroup.blocksRaycasts = isOn;
         }
     }
 }

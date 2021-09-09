@@ -25,11 +25,11 @@ public class VolumeSlider : MonoBehaviour
     void VolumeChange(Slider sliderVolume)
     {
         if (gameObject.tag == volumeTag[0]) {
-            AudioManager.current.changeMasterVolume(sliderVolume.value);
+            AudioManager.current.ChangeMasterVolume(sliderVolume.value);
         } else if (gameObject.tag == volumeTag[1]) {
-            AudioManager.current.changeMusicVolume(sliderVolume.value);
+            AudioManager.current.ChangeMusicVolume(sliderVolume.value);
         } else if (gameObject.tag == volumeTag[2]) {
-            AudioManager.current.changeEffectsVolume(sliderVolume.value);
+            AudioManager.current.ChangeEffectsVolume(sliderVolume.value);
         }
     }
 }

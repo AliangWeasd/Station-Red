@@ -29,10 +29,6 @@ public class Pause : MonoBehaviour
         if(canPause && Input.GetButtonDown("Submit"))
         {
             GameEvents.current.PauseButtonDown();
-            if (AudioManager.current != null)
-            {
-                AudioManager.current.ToggleMusic();
-            }
         }
     }
 
@@ -50,6 +46,11 @@ public class Pause : MonoBehaviour
         else
         {
             Time.timeScale = 0;
+        }
+
+        if (AudioManager.current != null)
+        {
+            AudioManager.current.ToggleMusic();
         }
 
         isPaused = !isPaused;

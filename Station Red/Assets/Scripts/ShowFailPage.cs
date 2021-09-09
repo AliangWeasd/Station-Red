@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -15,6 +16,7 @@ public class ShowFailPage : MonoBehaviour
     public Vector3 endPos = new Vector3();
     public float timeInSec = 1f;
 
+    private CanvasGroup canvasGroup;
     private GameObject record;
 
     private Camera cam;
@@ -26,6 +28,13 @@ public class ShowFailPage : MonoBehaviour
 
     void Start()
     {
+        canvasGroup = GetComponent<CanvasGroup>();
+
+        if (canvasGroup == null)
+        {
+            throw new Exception("CanvasGroup component required to use this script.");
+        }
+
         GameEvents.current.onPlayerDeath += FailStateReached;
 
         record = this.gameObject.transform.GetChild(0).gameObject;
@@ -42,6 +51,10 @@ public class ShowFailPage : MonoBehaviour
 
     public void FailStateReached()
     {
+        canvasGroup.alpha = 1;
+        canvasGroup.interactable = true;
+        canvasGroup.blocksRaycasts = true;
+
         endPos = cam.ScreenToWorldPoint(new Vector3(cam.pixelWidth / 2, cam.pixelHeight / 2, cam.nearClipPlane));
         startPos = transform.position;
 

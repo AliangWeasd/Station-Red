@@ -1,7 +1,9 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class ClockTimer : MonoBehaviour
 {
@@ -18,9 +20,18 @@ public class ClockTimer : MonoBehaviour
 
     private string timerText = "0000000";
 
+    private TMP_Text UItext;
+
     // Start is called before the first frame update
     void Start()
     {
+        UItext = GetComponent<TMP_Text>();
+
+        if (UItext == null)
+        {
+            throw new Exception("TextMeshProUGUI component required to use this script.");
+        }
+
         GameEvents.current.onWinStateReached += WinStateReached;
         GameEvents.current.onPlayerDeath += PlayerDeath;
         GameEvents.current.onStartGamePoint += StartGamePoint;
@@ -59,12 +70,10 @@ public class ClockTimer : MonoBehaviour
 
     void PrintTime(string time)
     {
-        for(int i = 0; i < time.Length; i++)
-        {
-            char digit = time[i];
+        string timeWithColons = time.Insert(2, ":").Insert(5, ":");
 
-            timer[i].sprite = number[digit - '0'];
-        }
+        UItext.text = timeWithColons;
+        UItext.text = "<mspace=0.6em>" + UItext.text + "</mspace>";
     }
 
     void AddTime(int penaltyTime)

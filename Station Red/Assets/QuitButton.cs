@@ -35,5 +35,9 @@ public class QuitButton : MonoBehaviour
             else
                 ButtonManager.current.QuitPressed();
         }
+        else
+        {
+            throw new Exception("No ButtonManager to command.");
+        }
     }
 }

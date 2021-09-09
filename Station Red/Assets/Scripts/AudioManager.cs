@@ -13,10 +13,12 @@ public class AudioManager : MonoBehaviour
     private float masterVolume;
     private float musicVolume;
     private float effectsVolume;
+    private bool isMute;
 
     private const string MASTER_VOLUME = "mastervolume";
     private const string MUSIC_VOLUME = "musicvolume";
     private const string EFFECTS_VOLUME = "effectsvolume";
+    private const string MUTE_TOGGLE = "mutetoggle";
 
     // Singleton
     public static AudioManager current = null;
@@ -38,8 +40,10 @@ public class AudioManager : MonoBehaviour
         masterVolume = PlayerPrefs.GetFloat(MASTER_VOLUME, 1);
         musicVolume = PlayerPrefs.GetFloat(MUSIC_VOLUME, 1);
         effectsVolume = PlayerPrefs.GetFloat(EFFECTS_VOLUME, 1);
+        isMute = (PlayerPrefs.GetInt(MUTE_TOGGLE, 0) == 1);
 
-        changeVolume();
+        ChangeVolume();
+        ChangeMute(isMute);
 
         //Set SoundManager to DontDestroyOnLoad so that it won't be destroyed when reloading our scene.
         DontDestroyOnLoad(gameObject);
@@ -138,30 +142,38 @@ public class AudioManager : MonoBehaviour
         yield return null;
     }
 
-    public void changeMasterVolume(float masterVolume)
+    public void ChangeMasterVolume(float masterVolume)
     {
         this.masterVolume = masterVolume;
         PlayerPrefs.SetFloat(MASTER_VOLUME, masterVolume);
-        changeVolume();
+        ChangeVolume();
     }
 
-    public void changeMusicVolume(float musicVolume)
+    public void ChangeMusicVolume(float musicVolume)
     {
         this.musicVolume = musicVolume;
         PlayerPrefs.SetFloat(MUSIC_VOLUME, musicVolume);
-        changeVolume();
+        ChangeVolume();
     }
 
-    public void changeEffectsVolume(float effectsVolume)
+    public void ChangeEffectsVolume(float effectsVolume)
     {
         this.effectsVolume = effectsVolume;
         PlayerPrefs.SetFloat(EFFECTS_VOLUME, effectsVolume);
-        changeVolume();
+        ChangeVolume();
     }
 
-    public void changeVolume()
+    public void ChangeVolume()
     {
         musicSource.volume = masterVolume * musicVolume;
         effectsSource.volume = masterVolume * effectsVolume;
+    }
+
+    public void ChangeMute(bool isMute)
+    {
+        musicSource.mute = isMute;
+        effectsSource.mute = isMute;
+
+        PlayerPrefs.SetInt(MUTE_TOGGLE, isMute ? 1 : 0);
     }
 }

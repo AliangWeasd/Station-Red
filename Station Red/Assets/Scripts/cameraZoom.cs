@@ -3,7 +3,7 @@ using System.Collections;
 
 public class cameraZoom : MonoBehaviour {
 
-	Camera cam;
+	private Camera cam;
 	public float zoom = 0.5f;
     public float max = 15.5f;
     public float min = 8.5f;
