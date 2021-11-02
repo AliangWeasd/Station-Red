@@ -1,0 +1,79 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!78 &1
+TagManager:
+  serializedVersion: 2
+  tags:
+  - Enemy
+  - Wall
+  - Dead
+  - Item
+  - Locked
+  - Unlocked
+  - Enemy (Sight)
+  - RecordTime
+  - CurrentTime
+  - TimerTime
+  - FailTime
+  - mastervolume
+  - musicvolume
+  - effectsvolume
+  - Pause
+  - Retry
+  - Help
+  - Options
+  - Levels
+  - Quit
+  - Menu
+  layers:
+  - Default
+  - TransparentFX
+  - Ignore Raycast
+  - 
+  - Water
+  - UI
+  - 
+  - 
+  - Terrain
+  - Walls
+  - Enemy
+  - Player
+  - Goal
+  - Item
+  - Score
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  m_SortingLayers:
+  - name: Default
+    uniqueID: 0
+    locked: 0
+  - name: Floor
+    uniqueID: 3124711753
+    locked: 0
+  - name: Wall
+    uniqueID: 335538679
+    locked: 0
+  - name: Entity
+    uniqueID: 1147499101
+    locked: 0
+  - name: Item
+    uniqueID: 3905002291
+    locked: 0
+  - name: UI
+    uniqueID: 1672169137
+    locked: 0
