@@ -18,8 +18,12 @@ public class WallBounce : MonoBehaviour
         
     }
 
-    void OnCollisionEnter2D(Collision2D col)
+    private void OnCollisionEnter2D(Collision2D other)
     {
-        Debug.Log(col.GetContact(0).point);
+        foreach (var contact in other.contacts)
+        {
+            Debug.DrawRay(contact.point, contact.normal, Color.red, 2f);
+        }
     }
+
 }

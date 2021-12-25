@@ -2370,10 +2370,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 665bf81da00a8db4c989c9b47fdb484a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hort: Horizontal
-  vert: Vertical
-  force: 50
-  isOn: 0
+  HorizontalAxis: Horizontal
+  VerticalAxis: Vertical
+  IsOn: 0
+  SpeedCap: 2
+  SquaredSpeedLimit: 4
+  LessAccelSpeedLimit: 0.5
+  Accel: 0.05
+  Deccel: 0.05
+  ReverseModifier: 2
+  HighSpeedModifier: 0.25
 --- !u!58 &1117124859
 CircleCollider2D:
   m_ObjectHideFlags: 0

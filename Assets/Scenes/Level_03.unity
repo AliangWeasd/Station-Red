@@ -1756,10 +1756,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 665bf81da00a8db4c989c9b47fdb484a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hort: Horizontal
-  vert: Vertical
-  force: 50
-  isOn: 0
+  HorizontalAxis: Horizontal
+  VerticalAxis: Vertical
+  IsOn: 0
+  SpeedCap: 2
+  SquaredSpeedLimit: 4
+  LessAccelSpeedLimit: 0.5
+  Accel: 0.05
+  Deccel: 0.05
+  ReverseModifier: 2
+  HighSpeedModifier: 0.25
 --- !u!50 &1039317641
 Rigidbody2D:
   serializedVersion: 4
@@ -4197,6 +4203,11 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 7965475797703807644, guid: d0ce1fc64aae1b0438d1a90613cf3cb8,
+        type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 2100000, guid: 51cacb902f1c5c9428d500d63b3e91c2, type: 2}
     - target: {fileID: 8302285406536313482, guid: d0ce1fc64aae1b0438d1a90613cf3cb8,
         type: 3}
       propertyPath: m_AnchorMax.x
